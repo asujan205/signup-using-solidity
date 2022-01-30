@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 import sha256 from 'sha256';
+import AuthValidation from './Authvalidation';
+//import AuthValidation from './Authvalidation';
+import Web3 from 'web3';
+
+import {LoginAbi} from "../Authentication";
+ const web3 = new Web3(Web3.givenProvider)
+ const contractAddress = "0x505b95565f4103817a4B031aBD615514451B7767"; 
+ const authenticatecontract = new web3.eth.Contract (LoginAbi,contractAddress);
 const Login=()=>{
     const[username,setUsername]=useState('');
     const[password,setPassword]=useState('');
@@ -7,6 +15,7 @@ const Login=()=>{
     const[error,setError]=useState(null);
     const[loading,setLoading]=useState(false);
     const[hashSignature,setHash]=useState('')
+    const[loggedin,setLoggedIn]=useState(false)
     const handleSave =(e)=>{
         e.preventDefault()
       
@@ -21,10 +30,39 @@ const Login=()=>{
         setDigicode(digi);
 
     }
-    const handleSubmit=()=>{
+    const handleSubmit= async()=>{
+
         const hash =sha256(username+password+digicode).toString();
          console.log(hash)
         setHash(hash)
+        
+       const accounts = await web3.eth.givenProvider.enable();
+
+       const  account= accounts[0]
+       let gas= await authenticatecontract.methods.getUserAddress().estimateGas();
+        //let userAddress = await authenticatecontract.methods.getUserAddress()
+                  //  .call({ from: account ,gas});
+        let validate = AuthValidation(username,account,password,digicode,gas,web3,authenticatecontract)
+        console.log(validate)
+        if(!validate){
+            setError('Invalid cardinals');
+            setLoading(false);
+            setLoggedIn(false);
+            setUsername('')
+            setPassword('')
+            setDigicode('')
+         return;
+        }
+        else{
+            setError(null);
+            setLoggedIn(false);
+            setUsername('')
+            setPassword('')
+            setDigicode('')
+            console.log('sujan')
+            
+
+        }
     }
     return (
         <div>
