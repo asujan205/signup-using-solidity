@@ -7,9 +7,9 @@ const AuthValidation = async (username, accountAddress, password, digiCode, gas,
         return false;
     } else {
        // let signedData = await SignData(username, accountAddress, web3);
-        let passwordDigiCodeHash = await web3.eth.accounts.hashMessage(username+password + digiCode);
+        let hash = await web3.eth.accounts.hashMessage(username+password + digiCode);
 
-        let hash = await web3.eth.accounts.hashMessage(username + passwordDigiCodeHash);
+        //let hash = await web3.eth.accounts.hashMessage(username + passwordDigiCodeHash);
 
         // get hash from the contract
         let hashFromContract = await contract.methods.getSignatureHash().call({ from: accountAddress });

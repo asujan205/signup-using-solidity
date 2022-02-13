@@ -3,8 +3,9 @@ import React, {useState} from "react";
 import sha256 from "sha256";
 import Web3  from "web3";
 import {LoginAbi} from "../Authentication";
+import Register from "./register";
  const web3 = new Web3(Web3.givenProvider)
- const contractAddress = "0x505b95565f4103817a4B031aBD615514451B7767"; 
+ const contractAddress = "0xa1cCfe2b161204a0f5f476FEa89bb5efF57e115A"; 
  const authenticatecontract = new web3.eth.Contract (LoginAbi, contractAddress);
 const Signup = () =>{
     const[username,setUsername]=useState('sujan');
@@ -40,17 +41,8 @@ const Signup = () =>{
    // console.log(username)
     const handleSubmit = async() =>{
       
-        const hash =sha256(username+password+digicode).toString();
-         console.log(hash)
-        setHash(hash)
-       
-        const accounts = await web3.eth.givenProvider.enable();
-       const account = accounts[0];
-       const gas = await authenticatecontract.methods.register(hashSignature).estimateGas();
-       const result = await authenticatecontract.methods
-      .register(hashSignature)
-      .send({ from: account, gas });
-      console.log(result)
+     const register = Register(username,password,digicode);
+     console.log(register)
 
     }
     return(

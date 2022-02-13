@@ -1,4 +1,4 @@
-const authenticate = artifacts.require("Authenticate");
+const authenticate = artifacts.require("Authentication");
 
 module.exports = function(deployer) {
   deployer.deploy(authenticate);

@@ -6,7 +6,8 @@ import Web3 from 'web3';
 
 import {LoginAbi} from "../Authentication";
  const web3 = new Web3(Web3.givenProvider)
- const contractAddress = "0x505b95565f4103817a4B031aBD615514451B7767"; 
+ const contractAddress = "0xcDa84ed4fC81363539Fdf0718BC61EFBE6389DD0"; 
+ 
  const authenticatecontract = new web3.eth.Contract (LoginAbi,contractAddress);
 const Login=()=>{
     const[username,setUsername]=useState('');
